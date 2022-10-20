@@ -1,0 +1,295 @@
+package war;
+
+public class Card {
+  
+  private String name;
+  private int value;
+  
+  
+  public Card(int rank, String suit) {
+    value = rank;
+    
+    
+    switch(rank) {
+      case 2: name = "2";
+      break;
+      case 3: name = "3";
+      break;
+      case 4: name = "4";
+      break;
+      case 5: name = "5";
+      break;
+      case 6: name = "6";
+      break;
+      case 7: name = "7";
+      break;
+      case 8: name = "8";
+      break;
+      case 9: name = "9";
+      break;
+      case 10: name = "10";
+      break;
+      case 11: name = "Jack";
+      break;
+      case 12: name = "Queen";
+      break;
+      case 13: name = "King";
+      break;
+      case 14: name = "Ace";
+      break;
+    }
+    
+    name+= " of " + suit;
+    
+  }
+  
+
+  
+  public int getValue() {
+    return value;
+  }
+  
+  public void setValue(int value) {
+    this.value=value;
+  }
+  
+  public String getName() {
+    return name;
+  }
+  
+  public void setName(String name) {
+    this.name=name;
+  }
+  
+
+ 
+  
+  public void describe() {
+
+    System.out.println(this.getName());
+
+  }
+
+  
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+package war;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Deck {
+  
+    ArrayList<Card> deck = new ArrayList<>();
+    
+    public Deck() {
+      deck = new ArrayList<Card>();
+      
+      
+      //new deck = total of 52 cards
+      //for loop to increase each card beginning from 2-14/2-Ace(Rank) and the suit.
+      for(int i=2; i<15; i++) {
+        deck.add(new Card(i, "Spades"));
+        deck.add(new Card(i, "Hearts"));
+        deck.add(new Card(i, "Diamonds"));
+        deck.add(new Card(i, "Clubs"));
+      }
+    }
+    
+    
+    //Shuffles the deck
+    public void shuffle() {
+      Collections.shuffle(deck);
+    }
+    
+    //removes the card after it is drawn
+    public Card drawCard() {
+      return deck.remove(0);
+    }
+    
+  
+    
+    
+}
+
+
+
+
+
+
+package war;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Player  {
+
+  private List<Card> hand = new ArrayList<Card>();
+  
+  private int score;
+  
+  private String name;
+
+
+  public Player(String name, int score) {
+    this.setName(name);
+    this.setScore(score);
+    
+  }
+
+
+
+  public void setScore(int score) {
+    this.score= score;
+  }
+  
+  
+  
+    public void describe() {
+     
+      System.out.println(this.name +"'s" + " Score: " + this.score);
+      
+    }
+    public void describeName() {
+      
+      System.out.print(this.name +"'s Card: " );
+      
+    }
+  
+  
+    public void setName(String name) {
+      this.name = name;
+    }
+  
+    public int getScore() {
+      return score;
+    }
+    public String getName() {
+      return name;
+    }
+    
+    public void draw(Deck deck) {
+      while(hand.size()<26) {
+        hand.add(deck.drawCard());
+      }
+    }
+  
+    
+    
+    public Card flip() {
+      return hand.remove(0);
+    }
+    
+    public void incrementScore() {
+      score++;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+package war;
+
+
+public class App {
+
+    public static void main(String[] args) {
+
+      
+      
+      Deck deck = new Deck();
+      System.out.println();
+      
+      deck.shuffle();
+      
+      Player playerOne = new Player("Player1", 0);
+      playerOne.draw(deck);
+      
+      Player playerTwo = new Player("Player2", 0);
+      playerTwo.draw(deck);
+      
+      
+      
+      for (int i =2; i<26; i++) {
+        Card playerOneCard = playerOne.flip();
+        Card playerTwoCard = playerTwo.flip();
+        
+        
+        
+      
+          
+            System.out.println("====== Start of Round ======= ");
+           
+            
+            
+            if (playerOneCard.getValue() > playerTwoCard.getValue()) {
+              
+              playerOne.describeName(); playerOneCard.describe();
+              playerTwo.describeName(); playerTwoCard.describe();
+              playerOne.incrementScore();
+              System.out.println("Player 1 Wins!");
+              playerOne.describe();
+              playerTwo.describe();
+              
+              
+            } else if(playerOneCard.getValue() < playerTwoCard.getValue()) {
+            //  System.out.println("---new round");
+
+              playerOne.describeName(); playerOneCard.describe(); 
+              playerTwo.describeName(); playerTwoCard.describe();
+              playerTwo.incrementScore();
+              System.out.println("Player 2 Wins!");
+              playerOne.describe();
+              playerTwo.describe();
+             
+              
+            } else if(playerOneCard.getValue() == playerTwoCard.getValue()) {
+             // System.out.print("---new round");
+              
+              playerOne.describeName(); playerOneCard.describe();
+              playerTwo.describeName(); playerTwoCard.describe();
+              System.out.println("Tie");
+              playerOne.describe();
+              playerTwo.describe();
+         
+            }
+            
+            System.out.println("====== End of Round ========= \n");
+        
+           
+        }
+        
+      if(playerOne.getScore()>playerTwo.getScore()) {
+        System.out.println("Player One wins the game!");
+      } else if(playerTwo.getScore()>playerOne.getScore()){
+        System.out.println("Player Two wins the game!! ");
+      }else {
+        System.out.println("The game was tied.");
+      }
+        
+        
+    }
+    
+    
+    
+  
+    }
+
+  
+
